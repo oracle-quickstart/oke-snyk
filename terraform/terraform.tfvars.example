@@ -1,0 +1,21 @@
+# Copyright (c) 2021 Oracle and/or its affiliates. All rights reserved.
+# Licensed under the Universal Permissive License v 1.0 as shown at http://oss.oracle.com/licenses/upl.
+# 
+
+# OCI authentication
+tenancy_ocid     = "ocid1.tenancy....."
+fingerprint      = "" # e.g.: "5f:53:..." or leave blank if using CloudShell
+user_ocid        = "" # e.g.: "ocid1.user..." or leave blank if using CloudShell
+private_key_path = "" # e.g.: "/users/user/.oci/oci_api_key.pem" or leave blank if using CloudShell
+
+# Deployment compartment
+compartment_ocid = "ocid1.compartment...."
+
+# region
+region = "us-ashburn-1"
+
+# Ingress Loadbalancer
+# ingress_nginx_enabled                = true
+# ingress_load_balancer_shape          = "flexible" # Flexible, 10Mbps, 100Mbps, 400Mbps or 8000Mps
+# ingress_load_balancer_shape_flex_min = "10"
+# ingress_load_balancer_shape_flex_max = "100"
