@@ -1,15 +1,15 @@
-# Copyright (c) 2021 Oracle and/or its affiliates. All rights reserved.
+# Copyright (c) 2021, 2022, Oracle and/or its affiliates. All rights reserved.
 # Licensed under the Universal Permissive License v 1.0 as shown at http://oss.oracle.com/licenses/upl.
 # 
 
 # OKE Variables
 ## OKE Cluster Details
 variable "app_name" {
-  default     = "MuShop App"
+  default     = "Snyk App"
   description = "Application name. Will be used as prefix to identify resources, such as OKE, VCN, ATP, and others"
 }
 variable "create_new_oke_cluster" {
-  default     = true
+  default     = false
   description = "Creates a new OKE cluster, node pool and network resources"
 }
 variable "existent_oke_cluster_id" {
@@ -77,7 +77,7 @@ variable "user_admin_group_for_vault_policy" {
 
 ## OKE Autoscaler
 variable "cluster_autoscaler_enabled" {
-  default     = false # TODO: true
+  default     = true
   description = "Enables OKE cluster autoscaler. Node pools will auto scale based on the resources usage"
 }
 variable "cluster_autoscaler_min_nodes" {
@@ -103,11 +103,11 @@ variable "k8s_version" {
   description = "Kubernetes version installed on your master and worker nodes"
 }
 variable "num_pool_workers" {
-  default     = 2 # TODO: 3
+  default     = 3
   description = "The number of worker nodes in the node pool. If select Cluster Autoscaler, will assume the minimum number of nodes configured"
 }
 variable "node_pool_shape" {
-  default     = "VM.Standard.E3.Flex"
+  default     = "VM.Standard.A1.Flex"
   description = "A shape is a template that determines the number of OCPUs, amount of memory, and other resources allocated to a newly created instance for the Worker Node"
 }
 variable "node_pool_node_shape_config_ocpus" {
@@ -127,7 +127,7 @@ variable "image_operating_system" {
   description = "The OS/image installed on all nodes in the node pool."
 }
 variable "image_operating_system_version" {
-  default     = "7.9"
+  default     = "8"
   description = "The OS/image version installed on all nodes in the node pool."
 }
 variable "generate_public_ssh_key" {
@@ -156,20 +156,16 @@ variable "network_cidrs" {
 }
 
 # OCI Provider
-variable "tenancy_ocid" {
-  sensitive   = true
-}
+variable "tenancy_ocid" {}
 variable "compartment_ocid" {}
 variable "region" {}
 variable "user_ocid" {
   default = ""
 }
 variable "fingerprint" {
-  sensitive   = true
   default = ""
 }
 variable "private_key_path" {
-  sensitive   = true
   default = ""
 }
 
