@@ -8,6 +8,7 @@
 ## Local .terraform directories
 **/.terraform/*
 **/.terrafor*
+!.terraform.lock.hcl
 
 ## .tfstate files
 *.tfstate
