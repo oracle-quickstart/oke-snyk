@@ -1,4 +1,4 @@
-# Copyright (c) 2021 Oracle and/or its affiliates. All rights reserved.
+# Copyright (c) 2021, 2022, Oracle and/or its affiliates. All rights reserved.
 # Licensed under the Universal Permissive License v 1.0 as shown at http://oss.oracle.com/licenses/upl.
 # 
 
@@ -11,7 +11,7 @@ resource "oci_containerengine_cluster" "oke_cluster" {
   endpoint_config {
     is_public_ip_enabled = (var.cluster_endpoint_visibility == "Private") ? false : true
     subnet_id            = oci_core_subnet.oke_k8s_endpoint_subnet[0].id
-    nsg_ids = []
+    nsg_ids              = []
   }
   options {
     service_lb_subnet_ids = [oci_core_subnet.oke_lb_subnet[0].id]
@@ -92,6 +92,12 @@ locals {
   oke_compartment_ocid = var.create_new_compartment_for_oke ? oci_identity_compartment.oke_compartment.0.id : var.compartment_ocid
 }
 
+# Local kubeconfig for when using Terraform locally. Not used by Oracle Resource Manager
+resource "local_file" "oke_kubeconfig" {
+  content  = data.oci_containerengine_cluster_kube_config.oke.content
+  filename = "${path.module}/generated/kubeconfig"
+}
+
 # Generate ssh keys to access Worker Nodes, if generate_public_ssh_key=true, applies to the pool
 resource "tls_private_key" "oke_worker_node_ssh_key" {
   algorithm = "RSA"
@@ -100,8 +106,8 @@ resource "tls_private_key" "oke_worker_node_ssh_key" {
 
 # Get OKE options
 locals {
-  cluster_k8s_latest_version   = reverse(data.oci_containerengine_cluster_option.oke.kubernetes_versions)[0]
-  node_pool_k8s_latest_version = reverse(data.oci_containerengine_node_pool_option.oke.kubernetes_versions)[0]
+  cluster_k8s_latest_version   = reverse(sort(data.oci_containerengine_cluster_option.oke.kubernetes_versions))[0]
+  node_pool_k8s_latest_version = reverse(sort(data.oci_containerengine_node_pool_option.oke.kubernetes_versions))[0]
 }
 
 # Checks if is using Flexible Compute Shapes
