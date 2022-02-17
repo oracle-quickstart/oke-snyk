@@ -9,6 +9,7 @@
 **/.terraform/*
 **/.terrafor*
 !.terraform.lock.hcl
+**/terraform/generated*
 
 ## .tfstate files
 *.tfstate
