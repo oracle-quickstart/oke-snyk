@@ -11,3 +11,18 @@ variable "snyk_deploy_goof_sample" {
   default     = false
   description = "Deploy Snyk's Goof Sample"
 }
+
+variable "snyk_sysdig_integration" {
+  default     = false
+  description = "Enrich the issues detected by Snyk for workloads with runtime data provided by Sysdig. NOTE: The Sysdig agent must be installed and running on the same cluster."
+}
+
+variable "sysdig_eve_secret_name" {
+  default     = "sysdig-eve-secret"
+  description = "Sysdig Eve Secret Name"
+}
+
+variable "sysdig_agent_namespace" {
+  default     = "sysdig-agent"
+  description = "Sysdig Agent Namespace"
+}
