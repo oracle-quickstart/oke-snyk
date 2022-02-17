@@ -21,7 +21,8 @@ resource "kubernetes_namespace" "goof_app_namespace" {
 
 resource "kubernetes_deployment" "goof" {
   metadata {
-    name = "goof"
+    name      = "goof"
+    namespace = kubernetes_namespace.goof_app_namespace.0.id
   }
 
   spec {
@@ -29,7 +30,7 @@ resource "kubernetes_deployment" "goof" {
 
     selector {
       match_labels = {
-        app = "goof"
+        app  = "goof"
         tier = "frontend"
       }
     }
@@ -37,7 +38,7 @@ resource "kubernetes_deployment" "goof" {
     template {
       metadata {
         labels = {
-          app = "goof"
+          app  = "goof"
           tier = "frontend"
         }
       }
@@ -68,11 +69,14 @@ resource "kubernetes_deployment" "goof" {
       }
     }
   }
+
+  count = var.snyk_deploy_goof_sample ? 1 : 0
 }
 
 resource "kubernetes_deployment" "goof_mongo" {
   metadata {
-    name = "goof-mongo"
+    name      = "goof-mongo"
+    namespace = kubernetes_namespace.goof_app_namespace.0.id
   }
 
   spec {
@@ -80,7 +84,7 @@ resource "kubernetes_deployment" "goof_mongo" {
 
     selector {
       match_labels = {
-        app = "goof"
+        app  = "goof"
         tier = "backend"
       }
     }
@@ -88,7 +92,7 @@ resource "kubernetes_deployment" "goof_mongo" {
     template {
       metadata {
         labels = {
-          app = "goof"
+          app  = "goof"
           tier = "backend"
         }
       }
@@ -104,50 +108,58 @@ resource "kubernetes_deployment" "goof_mongo" {
       }
     }
   }
+
+  count = var.snyk_deploy_goof_sample ? 1 : 0
 }
 
 resource "kubernetes_service" "goof" {
   metadata {
-    name = "goof"
+    name      = "goof"
+    namespace = kubernetes_namespace.goof_app_namespace.0.id
   }
   spec {
     selector = {
-      app = "goof"
+      app  = "goof"
       tier = "frontend"
     }
     port {
-      protocol = "TCP"
+      protocol    = "TCP"
       port        = 80
       target_port = 3001
-      name = "http"
+      name        = "http"
     }
     port {
-      protocol = "TCP"
+      protocol    = "TCP"
       port        = 9229
       target_port = 9229
-      name = "debug"
+      name        = "debug"
     }
 
     type = "LoadBalancer"
   }
+
+  count = var.snyk_deploy_goof_sample ? 1 : 0
 }
 
 resource "kubernetes_service" "goof_mongo" {
   metadata {
-    name = "goof-mongo"
+    name      = "goof-mongo"
+    namespace = kubernetes_namespace.goof_app_namespace.0.id
   }
   spec {
     selector = {
-      app = "goof"
+      app  = "goof"
       tier = "backend"
     }
     port {
-      protocol = "TCP"
+      protocol    = "TCP"
       port        = 27017
       target_port = 27017
-      name = "mongo"
+      name        = "mongo"
     }
 
     type = "LoadBalancer"
   }
+
+  count = var.snyk_deploy_goof_sample ? 1 : 0
 }
