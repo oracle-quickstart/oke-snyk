@@ -3,7 +3,7 @@
 # 
 
 output "comments" {
-  value = "The application URL will be unavailable for a few minutes after provisioning while the application is configured and deployed to Kubernetes"
+  value = "After sucesfull deployment, login to [Snyk](https://snyk.co/udrgA) and navigate to the Integrations menu where you will click on the Kubernetes section."
 }
 
 output "deployed_oke_kubernetes_version" {

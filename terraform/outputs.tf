@@ -11,3 +11,7 @@ output "deploy_id" {
 output "deployed_to_region" {
   value = var.region
 }
+
+output "stack_version" {
+  value = file("${path.module}/VERSION")
+}
