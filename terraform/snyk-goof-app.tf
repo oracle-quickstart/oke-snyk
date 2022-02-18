@@ -135,7 +135,7 @@ resource "kubernetes_service" "goof" {
       name        = "debug"
     }
 
-    type = "clusterIP"
+    type = "ClusterIP"
   }
 
   count = var.snyk_deploy_goof_sample ? 1 : 0
@@ -158,18 +158,18 @@ resource "kubernetes_service" "goof_mongo" {
       name        = "mongo"
     }
 
-    type = "clusterIP"
+    type = "ClusterIP"
   }
 
   count = var.snyk_deploy_goof_sample ? 1 : 0
 }
 
 output "snyk_goof_sample_access" {
-  value       = "kubectl proxy svc/goof --port=3001"
+  value       = "kubectl -n goof port-forward svc/goof 8088:80"
   description = "If using deployed the goof app, this command will allow you to access the app locally"
 }
 
 output "snyk_goof_sample_mongodb_access" {
-  value       = "kubectl proxy svc/goof-mongo --port=27017"
+  value       = "kubectl -n goof port-forward svc/goof-mongo 27017:27017"
   description = "If using deployed the goof app, this command will allow you to access the mongodb locally"
 }
