@@ -16,9 +16,17 @@ If you do not have any app to monitor and want to test, you can also deploy snyk
 
 ## Deploying
 
+### Using the magic button
+
 You can deploy directly to you Oracle Cloud tenancy using this button: [![Deploy to Oracle Cloud][magic_button]][magic_snyk_stack] follow the wizard, include your Snyk integration Id and apply.
 
-Or you can use Terraform scripts to apply. If you are using the Terraform (locally or via CloudShell), you need to copy the file `terraform.tfvars.example` to `terraform.tfvars` and populate the necessary variables.
+You can also enable the Sysdig Integration. The Sysdig agent must be installed and running on the same cluster. The scripts will clone the sysdig secret to the snyk namespace. If the secret has a different name from default or the sysdig is in a different namespace, enter the new name.
+
+Remember to select "Run Apply" when creating the stack. You can also do later by clicking the button "apply" on the stack details.
+
+### Using Terraform Scripts
+
+You can use Terraform scripts to apply. If you are using the Terraform (locally or via CloudShell), you need to copy the file `terraform.tfvars.example` to `terraform.tfvars` and populate the necessary variables.
 
 ## Using Snyk
 
