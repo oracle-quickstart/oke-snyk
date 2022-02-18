@@ -478,6 +478,7 @@ outputGroups:
       - deploy_id
       - deployed_to_region
       - deployed_oke_kubernetes_version
+      - stack_version
 
   - title: Dev Notes
     outputs:
@@ -503,6 +504,12 @@ outputs:
     title: "OKE Kubernetes version deployed"
     visible: true
 
+  stack_version:
+    type: string
+    title: Stack Version
+    displayText: Stack Version deployed
+    visible: true
+
   comments:
     type: string
     title: Comments
@@ -518,7 +525,7 @@ outputs:
   snyk_goof_sample_access:
     type: string
     title: Kubectl command to check goof sample
-    displayText: Kubectl command to check goof sample
+    displayText: Kubectl command to check goof sample (http://localhost:8088)
     visible: true
 
   snyk_goof_sample_mongodb_access:
