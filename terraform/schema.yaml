@@ -1,0 +1,541 @@
+# Copyright (c) 2022 Oracle and/or its affiliates. All rights reserved.
+# Licensed under the Universal Permissive License v 1.0 as shown at http://oss.oracle.com/licenses/upl.
+# 
+
+title: "Snyk Monitor for OKE"
+description: "Snyk: the platform developers choose to build cloud native applications securely, providing a range of developer-first security products."
+informationalText: "This stack deploys Snyk Monitor on an existent OKE Cluster (optionally the stack allows create a new cluster before deploy). There's an option to also deploy the snyk example app goof, which contains few vulnerabilities to be viable on the Snyk Dashboard."
+schemaVersion: 1.1.0
+version: "20190304"
+
+logoUrl: data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB3aWR0aD0iNjAycHgiIGhlaWdodD0iMzQycHgiIHZpZXdCb3g9IjAgMCA2MDIgMzQyIiB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiPgogICAgPCEtLSBHZW5lcmF0b3I6IFNrZXRjaCA1MS4yICg1NzUxOSkgLSBodHRwOi8vd3d3LmJvaGVtaWFuY29kaW5nLmNvbS9za2V0Y2ggLS0+CiAgICA8dGl0bGU+bG9nby12ZXJ0aWNhbC1ibGFjazwvdGl0bGU+CiAgICA8ZGVzYz5DcmVhdGVkIHdpdGggU2tldGNoLjwvZGVzYz4KICAgIDxkZWZzPgogICAgICAgIDxwYXRoIGQ9Ik01OS42MzQ1NjExLDE1MC40MjkzNTMgQzU3LjEzNTU4NTEsMTQ4LjU2Nzk1NyA1NC41NzIwMTczLDE0Ni4yMTkzNjYgNTQuNTcyMDE3MywxNDQuNDE3NjM5IEM1NC41NzIwMTczLDE0My4yMzQxMzQgNTYuNzAzNzM2NywxMzkuNTg2NDggNTYuNzAzNzM2NywxMzkuNTg2NDggTDcyLjU1NTE1MjksMTM5LjU4NjQ4IEM3Mi41NTUxNTI5LDEzOS41ODY0OCA3NC42MzQwOTQ3LDE0Mi44MjA0NzUgNzQuNjM0MDk0NywxNDQuNDE3NjM5IEM3NC42MzQwOTQ3LDE0Ni4wOTUzMTcgNzIuMDQ2NTU2OSwxNDguMzc5Mjk1IDY5LjQ2NDYwMDEsMTUwLjI0MDczNCBDNjguNTg1NzA1NSwxNDguNzU1MTA0IDY3LjQ2NzU1NzIsMTQ4LjQ5NzA4NCA2Ni45NTA4MzM3LDE0OS42NjgxMjMgQzY2LjY4NDE1NSwxNTAuMjc0ODE0IDY2LjYzMTYyODYsMTUxLjE0ODM0OSA2Ni43NjE5MTczLDE1Mi4wNjI0OTEgQzY1LjM1NTg3NDksMTUyLjk1NDE0MiA2NC4zMjg0NDc2LDE1My41Mjg2NzggNjQuMzI4NDQ3NiwxNTMuNTI4Njc4IEM2NC4zMjg0NDc2LDE1My41Mjg2NzggNjMuNTM0ODg3LDE1My4wNzM1MDQgNjIuNDAwNDA3NSwxNTIuMzQxMjQ4IEM2Mi41ODMzODYsMTUxLjMyODA1OCA2Mi41NDgyMTEyLDE1MC4zMzYxODQgNjIuMjUzNjI5MSwxNDkuNjY4MTIzIEM2MS43MzI0NTA1LDE0OC40ODEzODEgNjAuNTkxOTYsMTQ4Ljc2MjI4MSA1OS43MDYyODYyLDE1MC4zMDExNjEgQzU5LjY4MTkyOTEsMTUwLjM0MzM5MiA1OS42NTgwMTkyLDE1MC4zODYxMzUgNTkuNjM0NTYxMSwxNTAuNDI5MzUzIFoiIGlkPSJwYXRoLTEiPjwvcGF0aD4KICAgIDwvZGVmcz4KICAgIDxnIGlkPSJsb2dvLXZlcnRpY2FsLWJsYWNrIiBzdHJva2U9Im5vbmUiIHN0cm9rZS13aWR0aD0iMSIgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj4KICAgICAgICA8ZyBpZD0ibG9nby12ZXJ0aWNhbCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTgwLjAwMDAwMCwgMC4wMDAwMDApIj4KICAgICAgICAgICAgPGcgaWQ9InNueWstd29yZG1hcmsiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDAuMDAwMDAwLCAyMDAuMDAwMDAwKSIgZmlsbD0iIzA5MUMzMCIgZmlsbC1ydWxlPSJub256ZXJvIj4KICAgICAgICAgICAgICAgIDxwYXRoIGQ9Ik0yMDIuNDYzMDY4LDY5LjQyODA3MDMgTDIwMC45MjU4MzIsNjkuNDI4MDcwMyBMMjAwLjkyNTgzMiw5NS45MzY5Njk4IEwxODEuODQ2MDE2LDk1LjkzNjk2OTggTDE4MS44NDYwMTYsMjkuOTM1MjIgTDIwMC45MjU4MzIsMC4xODAzMzI2NTEgTDIwMC45MjU4MzIsNjEuNzYzOTMyOSBDMjA0LjcyMzcxLDU3LjEyMDM2NzEgMjE3LjUxODk0MiwzOS40OTI4NTA0IDIxNy41MTg5NDIsMzkuNDkyODUwNCBMMjQxLjA3NDgyOCwzOS40OTI4NTA0IEwyMTguNzM5Njg4LDYzLjA3MTM0NDMgTDI0MS44NDM0NDYsOTUuOTgyMDUzMyBMMjE3Ljc0NTAwNiw5NS45ODIwNTMzIEwyMDIuNDYzMDY4LDY5LjQyODA3MDMgWiBNMTQ5LjI5Mjc3Niw2NS4xMDAwODY4IEwxNTcuMTE0NTk2LDM5LjY3MzE4MzEgTDE3Ni4wMTM1NiwzOS42NzMxODMxIEwxNTMuODU5MjcyLDk1Ljc1NjYzNzUgQzE0Ny4yNTgxOTksMTEyLjYxNzc0IDEzNy44MDg3MTYsMTI0LjAyMzc4IDEyMy43MDIzMTIsMTI0LjAyMzc4IEMxMTguMjc2NzcyLDEyNC4wMjM3OCAxMTMuNzEwMjc2LDEyMi42MjYyMDIgMTExLjMxMzk5NiwxMjEuMjczNzA3IEwxMTguOTA5NzUyLDEwOS41NTIwODUgQzEyMC4wNDAwNzMsMTA5LjY4NzMzNCAxMjEuMjE1NjA2LDEwOS43MzI0MTggMTIyLjM5MTE0LDEwOS43MzI0MTggQzEyOC45MDE3ODgsMTA5LjczMjQxOCAxMzMuNzg0Nzc0LDEwMy40MjA3NzUgMTM2Ljk0OTY3Miw5NS45MzY5Njk4IEwxMTMuNzEwMjc2LDM5LjY3MzE4MzEgTDEzNS4wOTU5NDYsMzkuNjczMTgzMSBMMTQzLjQ2MDMyMSw2NC43ODQ1MDQ1IEMxNDUuMDg3OTgyLDY5LjU2MzMxOTkgMTQ2LjI2MzUxNiw3OC42NzAxMTg5IDE0Ni4yNjM1MTYsNzguNjcwMTE4OSBDMTQ2LjI2MzUxNiw3OC42NzAxMTg5IDE0Ny43NTU1NCw2OS44Nzg5MDE4IDE0OS4yOTI3NzYsNjUuMTAwMDg2OCBaIE05MS42NDY0MTM1LDYzLjc5MjY3NSBDOTEuNjQ2NDEzNSw1Ni40NDQxMTk0IDg4LjM5MTA4OTIsNTIuOTcyNzE1OCA4Mi4xOTY5MzExLDUyLjk3MjcxNTggQzc5LjE2NzY3MTQsNTIuOTcyNzE1OCA3Ni4wMDI3NzI5LDUzLjgyOTI5NjIgNzMuODMyNTU3MSw1NS4xMzY3MDggTDczLjgzMjU1NzEsOTUuOTM2OTY5OCBMNTQuNzUyNzQxMiw5NS45MzY5Njk4IEw1NC43NTI3NDEyLDQwLjIxNDE4MSBMNzMuNDI1NjQxNSwzOC42ODEzNTM1IEw3Mi45NzM1MTMzLDQ3Ljc4ODE1MjQgTDczLjYwNjQ5MjgsNDcuNzg4MTUyNCBDNzcuNjMwNDM1MSw0Mi4zNzgxNzI4IDg0LjQ1NzU3MjgsMzguMjc1NjA1IDkyLjU5NTg4MjgsMzguMjc1NjA1IEMxMDIuMzYxODU1LDM4LjI3NTYwNSAxMTAuODE2NjU1LDQ0LjMxNjc0ODggMTEwLjgxNjY1NSw1OC42MDgxMTEyIEwxMTAuODE2NjU1LDk1LjkzNjk2OTggTDkxLjY0NjQxMzUsOTUuOTM2OTY5OCBMOTEuNjQ2NDEzNSw2My43OTI2NzUgWiBNMC4xMzU2Mzg1LDkzLjA1MTY0NzcgTDEuODUzNzI2MTcsODAuMDY3Njk2OCBDNy44MjE4MjAxNyw4Mi45OTgxMDIzIDE0LjU1ODUzMjMsODQuMzk1NjgwMyAyMC4yMTAxMzY1LDg0LjM5NTY4MDMgQzI0LjMyNDUwNDQsODQuMzk1NjgwMyAyNy4wMzcyNzQ0LDgyLjk5ODEwMjMgMjcuMDM3Mjc0NCw4MC41MTg1MjgzIEMyNy4wMzcyNzQ0LDczLjM5NTM4ODkgMS4zMTExNzIxNyw3NS4xMDg1NDg3IDEuMzExMTcyMTcsNTYuNDg5MjAyOSBDMS4zMTExNzIxNyw0NC41ODcyNDc2IDEyLjI1MjY3NzksMzguMzIwNjg4MiAyNS45NTIxNjY0LDM4LjMyMDY4ODIgQzMyLjc3OTMwNDIsMzguMzIwNjg4MiAzOS44MzI1MDYzLDQwLjE2OTA5NzkgNDQuMzk5MDAyNCw0MS43OTIwOTE3IEw0Mi41NDUyNzYzLDU0LjU1MDYyNjkgQzM3Ljc1MjcxNTksNTIuNzAyMjE3IDMxLjI0MjA2NzksNTAuOTg5MDU2OCAyNS44MTY1Mjc5LDUwLjk4OTA1NjggQzIyLjQ3MDc3ODIsNTAuOTg5MDU2OCAxOS43NTgwMDgyLDUyLjE2MTIxOSAxOS43NTgwMDgyLDU0LjMyNTIxMDcgQzE5Ljc1ODAwODIsNjEuMzU4MTg0NCA0Ni4wMjY2NjQ2LDU5Ljk2MDYwNiA0Ni4wMjY2NjQ2LDc4LjEyOTEyMDggQzQ2LjAyNjY2NDYsOTAuMjExNDA4MyAzNS4yNjYwMTAxLDk3LjE1NDIxNTUgMjAuNTI2NjI2NCw5Ny4xNTQyMTU1IEMxMi4zODgzMTY0LDk3LjE1NDIxNTUgNS43ODcyNDI2OCw5NS43NTY2Mzc1IDAuMTM1NjM4NSw5My4wNTE2NDc3IFoiPjwvcGF0aD4KICAgICAgICAgICAgPC9nPgogICAgICAgICAgICA8ZyBpZD0ic255ay1kb2ciIGZpbGwtcnVsZT0iZXZlbm9kZCIgc3Ryb2tlLXdpZHRoPSIxIj4KICAgICAgICAgICAgICAgIDxnIGlkPSJkb2ciIHRyYW5zZm9ybT0idHJhbnNsYXRlKDU2LjQ2NjY2NywgMTUuNzMwMDAwKSI+CiAgICAgICAgICAgICAgICAgICAgPHBhdGggZD0iTTExMi4xMzI2NDQsNTQuMDYyMTQyOCBMMTcuMjI0NDU3OSw1NC4wNjIxNDI4IEMxNy4yMjQ0NTc5LDQ4LjEzMDI1MTYgMjUuODAzMTIyMywzMC4xOTk0NDkyIDQyLjk2MDQ1MSwwLjI2OTczNTU0MiBDNDIuOTYwNDUxLDAuMjY5NzM1NTQyIDQ1LjMzNTk5MjYsMTYuMDU0NTkzNyA1MC4wODcwNzU2LDQ3LjYyNDMxIEw3OS4wODE5NTgzLDQ3LjYyNTA0NjQgTDg2LjE5ODgzMTgsMC4yNjk3MzU1NDIgQzEwMy40ODgwNCwzMC41OTYzMTc2IDExMi4xMzI2NDQsNDguNTI3MTIgMTEyLjEzMjY0NCw1NC4wNjIxNDI4IFoiIGlkPSJzaGllbGQtb3V0bGluZS1lYXJzIiBmaWxsPSIjRkZGRkZGIiBmaWxsLXJ1bGU9Im5vbnplcm8iPjwvcGF0aD4KICAgICAgICAgICAgICAgICAgICA8cGF0aCBkPSJNNjQuNTMzMzMzMywyMDQuMTMwMTg0IEwwLDE1OC45NzQ5NjcgTDAsNTMuNTg1Nzg2MyBDMCw1My41ODU3ODYzIDIzLjg2MDAxNjMsNDQuNzkyODA5MiA2NC42MTYwODEyLDQ0Ljc5MjgwOTIgQzEwNS4zNzIxNDYsNDQuNzkyODA5MiAxMjkuMDU3Njc1LDUzLjU4NTc4NjMgMTI5LjA1NzY3NSw1My41ODU3ODYzIEwxMjkuMDU3Njc1LDE1OC45NzQ5NjcgTDY0LjUzMzMzMzMsMjA0LjEzMDE4NCBaIiBpZD0ic2hpZWxkLW91dGxpbmUiIGZpbGw9IiNGRkZGRkYiIGZpbGwtcnVsZT0ibm9uemVybyI+PC9wYXRoPgogICAgICAgICAgICAgICAgICAgIDxwYXRoIGQ9Ik02NC41MzMzMzMzLDE5Ny43ODMxNyBMNC4xMjMyNDg0MywxNTUuNjg5NDM4IEw0LjEyMzI0ODQzLDU3LjgxNTgwMTQgQzQuMTIzMjQ4NDMsNTcuODE1ODAxNCAyNi43MTQxNDM2LDQ5LjY0OTg3MTcgNjQuNTMzMzMzMyw0OS42NDk4NzE3IEw2NC41MzMzMzMzLDE5Ny43ODMxNyBaIiBpZD0ic2hpZWxkLWxlZnQiIGZpbGw9IiNEQkRCREIiIGZpbGwtcnVsZT0ibm9uemVybyI+PC9wYXRoPgogICAgICAgICAgICAgICAgICAgIDxwYXRoIGQ9Ik02NC42MTU1NjE3LDQ5LjY0OTg3MTcgQzY0LjU4NzU4NzMsNDkuNjQ5ODcxNyA2NC41NjEzMDc3LDQ5LjY1MDY5OTMgNjQuNTMzMzMzMyw0OS42NDk4NzE3IEw2NC41MzMzMzMzLDE5Ny42NTg2OTIgTDY0LjUzNDE4MTEsMTk3LjY1ODY5MiBMMTI0LjQxMzUwNSwxNTUuNjg2OTU1IEwxMjQuNDEzNTA1LDU3LjgxNTgwMTQgQzEyNC40MTM1MDUsNTcuODE1ODAxNCAxMDIuNDM0NzUyLDQ5LjY0OTg3MTcgNjQuNjE1NTYxNyw0OS42NDk4NzE3IFoiIGlkPSJzaGllbGQtcmlnaHQiIGZpbGw9IiNDNkM2QzYiIGZpbGwtcnVsZT0ibm9uemVybyI+PC9wYXRoPgogICAgICAgICAgICAgICAgICAgIDxwYXRoIGQ9Ik05Ny4yMjA3NjI1LDE3NC43NTQwNTkgTDkyLjEyNjY3NDEsMTMwLjU0NzQ4NyBMNjQuMTMsMTMwLjU0NzQ4NyBDNjQuMTMsMTY1LjYzNDAyIDY0LjEzLDE4OC4wODAxOTQgNjQuMTMsMTk3Ljg4NjAwNyBMNjQuNTMzMzMzMywxOTguMjY2NDYzIEM3NS40MjUzNTY4LDE5MC44MjU1MTYgODYuMzIxMTY2NiwxODIuOTg4MDQ3IDk3LjIyMDc2MjUsMTc0Ljc1NDA1OSBaIiBpZD0ibmVjay1yaWdodCIgZmlsbD0iIzNCM0I2MyIgZmlsbC1ydWxlPSJub256ZXJvIj48L3BhdGg+CiAgICAgICAgICAgICAgICAgICAgPHBvbHlnb24gaWQ9Im5lY2stbGVmdCIgZmlsbD0iIzUzNTM3QSIgZmlsbC1ydWxlPSJub256ZXJvIiBwb2ludHM9IjMxLjg2MzMzMzMgMTc1LjEwMjk0MSA2NC41MzMzMzMzIDE5OC4yNjY0NjMgNjQuNTQ5NTMxNyAxMjkuMjAxMjcxIDM2LjI1NTcyMzIgMTI5LjIwMTI3MSI+PC9wb2x5Z29uPgogICAgICAgICAgICAgICAgICAgIDxwYXRoIGQ9Ik03OC41MTMyNDcsMTYyLjAxODAxNCBDNzguNTEzMjQ3LDE2OS42MTI4NDEgNzEuMjk2NzM3NiwxNzMuMzc3ODc0IDY0LjY3NjQ0OTcsMTczLjM3Nzg3NCBDNTguMDU2MTYyMiwxNzMuMzc3ODc0IDUwLjY5MzY4OTcsMTY5LjYxMjg0MSA1MC42OTM2ODk3LDE2Mi4wMTgwMTQiIGlkPSJjaGluIiBmaWxsPSIjQkM5Mzc1IiBmaWxsLXJ1bGU9Im5vbnplcm8iPjwvcGF0aD4KICAgICAgICAgICAgICAgICAgICA8cGF0aCBkPSJNNjQuNjAzMDU2LDE2NS45NDU3NTkgQzU5LjI4ODE4OSwxNjUuOTQ1NzU5IDU2LjcwMzczNjcsMTYyLjExMjcyNyA1Ni43MDM3MzY3LDE1NC4yMzI5NTMgTDU5LjIzNzg4NTMsMTU0LjIzMjk1MyBDNTkuMjM3ODg1MywxNjMuNDU4MTMzIDYyLjg2MDU3MTMsMTYzLjQ1ODEzMyA2NC42MDMwNTYsMTYzLjQ1ODEzMyBDNjYuMzQ0NzE2MiwxNjMuNDU4MTMzIDY5Ljk2ODIyNywxNjMuNDU4MTMzIDY5Ljk2ODIyNywxNTQuMjMyOTUzIEw3Mi41MDE1NTA4LDE1NC4yMzI5NTMgQzcyLjUwMTU1MDgsMTYyLjExMjcyNyA2OS45MTcwOTg1LDE2NS45NDU3NTkgNjQuNjAzMDU2LDE2NS45NDU3NTkgWiIgaWQ9InRlZXRoIiBmaWxsPSIjRkZGRkZGIiBmaWxsLXJ1bGU9Im5vbnplcm8iPjwvcGF0aD4KICAgICAgICAgICAgICAgICAgICA8cGF0aCBkPSJNNjQuNTMzMzMzMywxNTYuMTU2MzUgQzY2LjE2ODU4NzMsMTYwLjM4MjUzNCA2OS4zMjkzMTg5LDE2Mi40OTU2MjYgNzQuMDE1NTI4MiwxNjIuNDk1NjI2IEM3OC42MDM4Nzg4LDE2Mi40OTU2MjYgODMuMzkxNzk0OCwxNjAuMTIyMTQxIDg1LjU3MjE2ODgsMTU0LjI1NjQyOSBDODguNjE3NjAwMSwxNDYuMDUxMjMxIDg4LjU4NzA4NzksMTM0LjYzMDY1NyA4OC41ODcwODc5LDEzNC42MzA2NTcgQzg4LjU4NzA4NzksMTM0LjYzMDY1NyAxMDIuMTIwNTM0LDExNy45ODE4NTIgMTAyLjEyMDUzNCwxMTIuMzUyMjU4IEMxMDIuMTIwNTM0LDExMi4zNTIyNTggODkuNTkxNDY3LDExMi4zNTIyNTggNjQuNTMzMzMzMywxMTIuMzUyMjU4IEw2NC41MzMzMzMzLDE1Ni4xNTYzNSBaIiBpZD0iZmFjZS1yaWdodCIgZmlsbD0iI0M0OUE3RSIgZmlsbC1ydWxlPSJub256ZXJvIj48L3BhdGg+CiAgICAgICAgICAgICAgICAgICAgPHBhdGggZD0iTTI2LjQwMTAwMjYsMTEyLjM1MjI1OCBDMjYuNDAxMDAyNiwxMTguODcxNjgxIDM5LjgxNzMwNTcsMTM0LjYzMDY1NyAzOS44MTczMDU3LDEzNC42MzA2NTcgQzM5LjgxNzMwNTcsMTM0LjYzMDY1NyAzOS43ODQzMTk4LDE0Ni4wNDc5OTMgNDIuODMzMDQ5NiwxNTQuMjU2NDI5IEM0NS4wMDg0NzU1LDE2MC4xMTgwOTMgNDkuODAxMzM5NCwxNjIuNDk1NjI2IDU0LjM5MDUxNDksMTYyLjQ5NTYyNiBDNTkuMDc2NzI0MSwxNjIuNDk1NjI2IDYyLjQ1NzY2MzYsMTYwLjM4MjUzNCA2NC41MzMzMzMzLDE1Ni4xNTYzNSBMNjQuNTMzMzMzMywxMTIuMzUyMjU4IEwyNi40MDEwMDI2LDExMi4zNTIyNTggWiIgaWQ9ImZhY2UtbGVmdCIgZmlsbD0iI0Q4QjdBMCIgZmlsbC1ydWxlPSJub256ZXJvIj48L3BhdGg+CiAgICAgICAgICAgICAgICAgICAgPHBhdGggZD0iTTEwMC41MDUwMDUsNzQuODY1MzEyMiBDOTAuMDcyMzYxMyw2NC4zNTM4MTkxIDg3LjQ2MzE2OTcsNDIuNDM0NzA1NCA4Ny40NjMxNjk3LDQyLjQzNDcwNTQgQzg1LjUxNTM0NzIsNDkuMzQxNDQ4NCA4MS4yODE1OTU5LDY5LjcwNTQ5MjYgODEuMjgxNTk1OSw2OS43MDU0OTI2IEM4MS4yODE1OTU5LDY5LjcwNTQ5MjYgNzMuMDU4NDYwNiw2Ny4wOTIxNTg3IDY0LjIwMDg5ODQsNjcuMDc4Mzk2OSBDNjMuOTEwMDcyLDY3LjA3ODM5NjkgNjMuOTEwMDcyLDk0LjUxNTcwMzggNjQuMjAwODk4NCwxNDkuMzkwMzE4IEw3Mi42MzM0OTQ4LDE0My40MDA4OTQgTDc0LjIwMTE1MzksMTE0LjMzNDYxMiBMODMuMTc5OTM5NSwxMjQuNDAxNjg0IEw5NC43NDY0NzU5LDEyNy43MjMxMDUgQzk0Ljc0NjQ3NTksMTI3LjcyMzEwNSA5OS4wNzQyMzczLDEyNC42OTA2NzkgOTkuMDc0MjM3MywxMjQuNzAyMDEyIEMxMDAuOTExNTU3LDEyMi4xNzMxMDEgMTAxLjUyMDk3MywxMjAuMDE4OTk0IDEwMS45NjU0NTksMTE4LjkwMTA2IEMxMDMuNTcxODc3LDExNC44MzQwOCA5OS45NjQ4NTkxLDgzLjczMTg4IDk5Ljk2NDg1OTEsODMuNzMxODggQzk4LjY4NDE3ODEsODEuMDk3NzMyNyAxMDAuNTA1MDA1LDc0Ljg2NTMxMjIgMTAwLjUwNTAwNSw3NC44NjUzMTIyIFoiIGlkPSJicm93LXJpZ2h0IiBmaWxsPSIjM0IzQjYzIiBmaWxsLXJ1bGU9Im5vbnplcm8iPjwvcGF0aD4KICAgICAgICAgICAgICAgICAgICA8cGF0aCBkPSJNNDguMDA1MzMxOSw2OS43MDM4NzM1IEM0OC4wMDUzMzE5LDY5LjcwMzg3MzUgNDMuNzY5OTMxLDQ5LjM0MDYzODkgNDEuODIzNzU4MSw0Mi40MzMwODYyIEM0MS44MjM3NTgxLDQyLjQzMzA4NjIgMzkuMjE2MjE1Niw2NC4zNTIyMDAzIDI4Ljc4MTkyMzIsNzQuODYzNjkzIEMyOC43ODE5MjMyLDc0Ljg2MzY5MyAzMC42MDI3NDk3LDgxLjA5NjkyMzYgMjkuMzIyMDY4Nyw4My43MzAyNjA4IEMyOS4zMjIwNjg3LDgzLjczMDI2MDggMjUuNzE1MDUxLDExNC44MzQwOCAyNy4zMjE0Njg2LDExOC44OTQ1ODQgQzI3Ljc2NTEzMDEsMTIwLjAxMzMyOCAyOC4zNzk0OTQyLDEyMi4xNjY2MjYgMzAuMjE0MzM5NywxMjQuNjk1NTM2IEMzMC4yMTQzMzk3LDEyNC42ODQyMDMgMzQuNTQ0NTc1MiwxMjcuNzE3NDM5IDM0LjU0NDU3NTIsMTI3LjcxNzQzOSBMNDYuMTA4NjM3NSwxMjQuMzk1MjA4IEw1NS4wODU3NzM5LDExNC4zMjk3NTUgTDU2LjY1NzU1NjMsMTQzLjM5NjAzNyBMNjQuNTQxODUxLDE0OS4yMjY5NDEgTDY0LjU0MTg1MSw2Ni45MjQxMDI2IEM1NS42NTEzMDMsNjYuOTM4NjczOSA0OC4wMDUzMzE5LDY5LjcwMzg3MzUgNDguMDA1MzMxOSw2OS43MDM4NzM1IFoiIGlkPSJicm93LWxlZnQiIGZpbGw9IiM1MzUzN0EiIGZpbGwtcnVsZT0ibm9uemVybyI+PC9wYXRoPgogICAgICAgICAgICAgICAgICAgIDxwYXRoIGQ9Ik05My4yMDQzODA5LDIyLjEyMTY2MDEgQzk0LjkzNTMyMDYsMjUuMjkxNzAyOSAxMDkuODE1NTI1LDU0LjU5ODEwOSAxMDkuODE1NTI1LDY0Ljc0Njk0MTMgTDEwMy4yMTU2MjgsODIuNDExNTY4MiBDMTA0LjMzMjIwNCw5Mi4zNzkwNzAzIDEwNi41NTI5ODUsMTE0LjAzNjcxMiAxMDQuODc2NDczLDExOC4yNjgwMjMgQzEwMy44NDE1MzcsMTIwLjg4NTE3IDk5Ljg5NjQxMywxMjYuMjY5MjI1IDk2LjUyMTk0NjQsMTMwLjYyOTI0OCBMMTAxLjEzNTMyOSwxNzIuMDA2OTczIEw5NC44OTg4Mzg3LDE3Ni40MTk5NDkgTDkxLjQzMTM4NDEsMTQ2LjE4NjQxOSBDOTAuOTU0NzM2NCwxNDkuMjU0NDYzIDkwLjIzODExNiwxNTIuNTMwNTUyIDg5LjE0NTQ1NTMsMTU1LjQ3MjMxMyBDODcuNzAwNjY4OSwxNTkuMzY2MDU4IDg1LjE0NzU1MzYsMTYyLjMxNjcyNCA4MS44ODE5NDA3LDE2NC4wNjQ0NTcgQzgxLjY5MDYyMTksMTczLjM5ODkyMiA3Mi45MzAzNjg3LDE3OC40MzQ4ODYgNjQuNjc2NDQ5NywxNzguNDM0ODg2IEM1Ni4zNTQwODU0LDE3OC40MzQ4ODYgNDcuNTIwNDM4MSwxNzMuNDAyOTY5IDQ3LjMyNTgyMDUsMTY0LjA3MTc0MiBDNDQuMDUzNjEwNiwxNjIuMzIwNzcxIDQxLjQ5NzE5NjQsMTU5LjM3MDEwNiA0MC4wNTA3NjExLDE1NS40NzIzMTMgQzM5LjAwMTgwNjcsMTUyLjY0Mzg4NCAzOC4yOTUwODE5LDE0OS41MTI2OTcgMzcuODE1OTYwNCwxNDYuNTQ3NDYxIEwzNC40OTg4ODQzLDE3Ni45NzU3MDIgTDI4LjIyODU2OTgsMTcyLjQ5MDk0OSBMMzIuNzU2NzM0NywxMzAuNzU1NTMxIEMyOS4zNTU4Nzk0LDEyNi4zNzYwOCAyNS4zMzQ4ODc1LDEyMC45MTE4ODQgMjQuMjkwMDU2NCwxMTguMjY1NTk1IEMyMi42MTM1NDM1LDExNC4wMzM0NzQgMjQuNzQ3NzM3LDkyLjM3OTA3MDMgMjUuODY1OTYxOSw4Mi40MDk5NDk1IEwxOC44NzM3NTczLDY0LjEyNjM0NjkgTDE4Ljg3Mzc1NzMsNjMuNTMwNTQ3MSBDMTguODczNzU3Myw1My4zODE3MTQ5IDM0LjE0Mzc5NTQsMjUuMjkxNzAyOSAzNS44NzcyMDkxLDIyLjEyMTY2MDEgTDQwLjgyMjYzMzEsMTMuMjIxOTAyNCBDNDMuODMzNzA0MiwzMy44NDE3NTIyIDQ1LjMzODE0LDQ0LjE2MDg1MTQgNDUuMzM1OTQwOCw0NC4xNzkyMDAyIEw0Ny43NzExMzE1LDYwLjg4ODMwNTIgTDUwLjk3NDg5NTMsNjYuMDYzNTA1MiBDNTQuMDUzMzEyOCw2NS4wNDI3MTI1IDU5LjI3OTExNzcsNjMuNjI1MjU5OSA2NC41NzA4OTQ2LDYzLjYyNTI1OTkgQzY5Ljg2ODQ0NDQsNjMuNjI1MjU5OSA3NS4xMjk3MDkxLDY1LjA0NzU2OTYgNzguMjIxMzIwOCw2Ni4wNjY3NDMyIEw4MS40MjM0MzU4LDYwLjg4OTExNDQgTDg4LjM2MTIxMzYsMTMuMjIxOTAyNCBMOTMuMjA0MzgwOSwyMi4xMjE2NjAxIFogTTY0LjY3NjQ0OTcsMTcxLjgwMDEzOCBDNjguMzI5NjQ3OCwxNzEuODAwMTM4IDczLjUzMjM2MjcsMTcwLjE3NzA3IDc0LjgzMTE4NiwxNjUuODc0NTIyIEM3NC42OTE4MjAyLDE2NS44Nzg1NyA3NC41NTc0MDI1LDE2NS44ODk5MDMgNzQuNDE4MDM2NywxNjUuODg5OTAzIEM3My43MDcxODg3LDE2NS44ODk5MDMgNzMuMDQyNTIwOCwxNjUuODI0MzMyIDcyLjM5NzY0NDgsMTY1LjczNzcxNSBDNzAuNTEzMzIwMywxNjguMzEyNzY4IDY3LjU3NzU2NzUsMTY5LjA5Mzk0NSA2NC42MDM4ODA4LDE2OS4wOTM5NDUgQzYxLjYzNTE0MTcsMTY5LjA5Mzk0NSA1OC43MDUxNjE0LDE2OC4zMDU0ODIgNTYuODI0MTM1OCwxNjUuNzM0NDc3IEM1Ni4xNzUxMzYxLDE2NS44MjUxNDIgNTUuNTAzMDQ2OSwxNjUuODg5OTAzIDU0Ljc4NjQyNjQsMTY1Ljg4OTkwMyBDNTQuNjQ5NTM0MiwxNjUuODg5OTAzIDU0LjUxNzU5MDYsMTY1Ljg3ODU3IDU0LjM4MzE3MjUsMTY1Ljg3NDUyMiBDNTUuNjk1MTksMTcwLjE3NzA3IDYwLjk2ODAwMDIsMTcxLjgwMDEzOCA2NC42NzY0NDk3LDE3MS44MDAxMzggWiBNNjAuMzk4MTY3MiwxNjQuNzI4MjU1IEM2MS41MzEyMzU4LDE2NS41NjIwNTEgNjIuOTMxNDkxLDE2Ni4wMjU5MDEgNjQuNjA2MzU0OCwxNjYuMDI1OTAxIEM2Ni4yNzIxNDY5LDE2Ni4wMjU5MDEgNjcuNjY1ODA1MSwxNjUuNTU4ODEzIDY4Ljc5NzIyNDUsMTY0LjcyODI1NSBDNjcuODk1MDU3OCwxNjQuMzM0MDI0IDY3LjA3ODY1NDIsMTYzLjg2NDUwNyA2Ni4zNTg3MzUzLDE2My4zNTIwODggQzY1LjcwNzI2MiwxNjMuNTQxNTEzIDY1LjA4MzgyNjksMTYzLjUzNzQ2NSA2NC42MDMwNTYsMTYzLjUzNzQ2NSBDNjQuMTE5ODExNCwxNjMuNTM3NDY1IDYzLjQ4OTc3ODksMTYzLjUzNzQ2NSA2Mi44MzMzNTc5LDE2My4zNDgwNCBDNjIuMTE1MDg3OCwxNjMuODY0NTA3IDYxLjMwMDMzMzksMTY0LjMzNDAyNCA2MC4zOTgxNjcyLDE2NC43MjgyNTUgWiBNODYuMzU2NDksMTMyLjYyODczOCBDOTAuODQ1MDU4NCwxMjcuMTUzMjEgOTcuNjAyMjM3NywxMTguMzM0NDAzIDk4LjU4MTA5NywxMTUuODY2MjA2IEM5OS4zMTkxNTgzLDExMy4zMjUxNTIgOTguMDU5OTE4MSw5Ni40NzkyNDA1IDk2LjQ1NzYyNCw4Mi4zNTk3NTk1IEw5Ni4zNjkzODY0LDgxLjU3Njk2MzIgTDk3LjY5Mzc3MzgsNzguMDY5MzU0NCBDOTMuMzI3MjUzNiw3My40OTcyMzk2IDkwLjI4MDk5NzksNjcuMjMxNjI4NyA4OC4xOTk1ODIyLDYxLjMxNDkxNjkgTDg3LjkyOTA5NjcsNjMuMTczNTUzIEw4MS4wMzUwMjU4LDc0LjMwMjcwMjMgTDc4LjM0MjU0NDIsNzMuMTc1ODYzNyBDNzguMjc2NTcyMiw3My4xNDc1MzA5IDcxLjI0NzI1ODcsNzAuMjU2NzY5MSA2NC41NzUwMTc4LDcwLjI1Njc2OTEgQzU3Ljg1OTg5NTgsNzAuMjU2NzY5MSA1MC45NDQzODM2LDczLjE0NTEwMjYgNTAuODc2NzYxOSw3My4xNzM0MzUzIEw0OC4xODAxNTc1LDc0LjMwOTk4NzcgTDQxLjI3Nzg0LDYzLjE3NTk4MTQgTDQxLjA3MzMyNjYsNjEuNzQ5NjI0MSBDMzguOTY5NjQ1Myw2Ny42MDg4NjA1IDM1LjkyMDA5MDgsNzMuNzY0Mzc4IDMxLjU3NDE4Nyw3OC4yMzY5MjI4IEwzMi44MzkxOTk2LDgxLjU3OTM5MTYgTDMyLjc1MDk2MjEsODIuMzYyOTk3OCBDMzEuMTQ3ODQzMSw5Ni40NzkyNDA1IDI5Ljg4ODYwMywxMTMuMzI1MTUyIDMwLjY1MTQwNCwxMTUuOTMwMTU3IEMzMS42MDU1MjM3LDExOC4zMzg0NTEgMzguMzYzNTI3OCwxMjcuMTU3MjU3IDQyLjg0OTYyMTksMTMyLjYyODczOCBMNDMuNTk4NDA0MiwxMzMuNTQyNjc1IEw0My41OTQyODA5LDEzNC43MTQwMzcgQzQzLjU5NDI4MDksMTM0LjgyNDEzMSA0My42MDc0NzUyLDE0NS42NTYxOSA0Ni40MDYzMzYyLDE1My4xOTQzNTEgQzQ4LjQzODI3MzEsMTU4LjY2MTc4NCA1Mi45NDU4MDgzLDE1OS4yNDYyNTEgNTQuNzkyMTk4OSwxNTkuMjQ2MjUxIEM1OS40MzMzMjczLDE1OS4yNDYyNTEgNjEuMzk2ODE4MSwxNTUuMDYzNTEgNjEuNDc3NjMzNiwxNTQuODg1NDE4IEM2Mi41NjUyNTI5LDE1Mi43ODM3MTEgNjMuMTA5MDYyNSwxNDkuMzMwODEzIDYzLjEwOTA2MjUsMTQ0LjUyNjcyNiBDNjMuMTA5MDYyNSwxNDQuNTI2NzI2IDY1LjkxNTA2NTEsMTQ0LjUyNjcyNiA2NS45MTUwNjUxLDE0NC41MjY3MjYgQzY1LjkxNTA2NTEsMTQ4LjM4NjM4NSA2Ni41MDAwMTk1LDE1MS44NDY4MzcgNjcuNjY5OTI4NCwxNTQuOTA4MDg0IEM2Ny43NDA4NDgxLDE1NS4wNTk0NjMgNjkuNzUzODE3OCwxNTkuMjU2Nzc0IDc0LjQxODAzNjcsMTU5LjI1Njc3NCBDNzYuMjYwMzA0LDE1OS4yNTY3NzQgODAuNzY5NDg4NCwxNTguNjY1ODMyIDgyLjc5OTc3NjEsMTUzLjE5ODM5OCBDODUuNjA3NzA4MSwxNDUuNjMzNTIzIDg1LjYxMTAwNjYsMTM0LjgyNDEzMSA4NS42MTEwMDY2LDEzNC43MTgwODUgTDg1LjYwNzcwODEsMTMzLjU0NjcyMyBMODYuMzU2NDksMTMyLjYyODczOCBaIiBpZD0iZmFjZS1vdXRsaW5lIiBmaWxsPSIjMzMzMTUyIiBmaWxsLXJ1bGU9Im5vbnplcm8iPjwvcGF0aD4KICAgICAgICAgICAgICAgICAgICA8cGF0aCBkPSJNODUuNTkxMjE0NywxMDMuMTg2ODQ0IEw3NS40NTYyNzAyLDEwMy4xODY4NDQgTDcyLjA3ODUwNTEsMTAzLjE4Njg0NCBMNzIuMDc4NTA1MSwxMDMuMzI2ODg5IEM3Mi4wNzg1MDUxLDEwNy45NjA1MjcgNzYuMTU4ODcxNywxMTEuNzE0MjI3IDgwLjk0NTEzODQsMTExLjcxNDIyNyBDODUuNzMzMDU0NSwxMTEuNzE0MjI3IDg5LjgxMzQyMTEsMTA3Ljk1OTcxOCA4OS44MTM0MjExLDEwMy4zMjY4ODkgTDg5LjgxMzQyMTEsMTAzLjE4Njg0NCBMODUuNTkxMjE0NywxMDMuMTg2ODQ0IFoiIGlkPSJleWUtc2hhZG93LXJpZ2h0IiBmaWxsPSIjMzMzMTUyIiBmaWxsLXJ1bGU9Im5vbnplcm8iPjwvcGF0aD4KICAgICAgICAgICAgICAgICAgICA8cGF0aCBkPSJNNzUuNDU2MjcwMiwxMDMuMTg2ODQ0IEw3NS40NTYyNzAyLDEwMy4zMjY4ODkgQzc1LjQ1NjI3MDIsMTA2LjA4MzI3MiA3Ny43MTU4MTAzLDEwOC4zMTY3MTIgODAuNTI0NTY3MSwxMDguMzE2NzEyIEM4My4zMzMzMjM5LDEwOC4zMTY3MTIgODUuNTkyMDM5NCwxMDYuMDgzMjcyIDg1LjU5MjAzOTQsMTAzLjMyNjg4OSBMODUuNTkyMDM5NCwxMDMuMTg2ODQ0IEw3NS40NTYyNzAyLDEwMy4xODY4NDQgWiIgaWQ9ImV5ZS1yaWdodCIgZmlsbD0iI0ZGRkZGRiIgZmlsbC1ydWxlPSJub256ZXJvIj48L3BhdGg+CiAgICAgICAgICAgICAgICAgICAgPHBhdGggZD0iTTc5LjcxMzExMTgsMTAzLjE4Njg0NCBDNzkuNjkwMDIxNiwxMDMuMTg2ODQ0IDc5LjY3MDIzLDEwMy4xOTgxNzcgNzkuNjQ5NjEzOCwxMDMuMjAyMjI1IEM3OS45NDQwMTM3LDEwMy4yNjI5MzggODAuMTA3Mjk0NCwxMDMuOTE4NjQyIDgwLjA0Mzc5NjMsMTA0LjM1NDk2OCBDNzkuOTQ4OTYxNiwxMDUuMDIyMDA0IDc5LjM3MDA1NzUsMTA1LjQ4NTA0NCA3OC43MDcwMzkyLDEwNS40OTYzNzcgQzc4LjkwMDAwNzIsMTA2LjM2ODIyIDc5LjYyNDA0OTYsMTA3LjA2OTI1NiA4MC41ODU1OTEyLDEwNy4yMDIwMTYgQzgxLjgxNDMxOTIsMTA3LjM3MjgyMyA4Mi45NDk4NjE4LDEwNi41NDU1MDMgODMuMTIzODYyOSwxMDUuMzQwMTQyIEM4My4yNDkyMDk2LDEwNC40NTI5MTggODIuODE0NjE5MywxMDMuMTg2ODQ0IDgyLjA4ODEwMjksMTAzLjE4Njg0NCBMNzkuNzEzMTExOCwxMDMuMTg2ODQ0IFoiIGlkPSJleWUtcHVwaWwtcmlnaHQiIGZpbGw9IiMzMzMxNTIiIGZpbGwtcnVsZT0ibm9uemVybyI+PC9wYXRoPgogICAgICAgICAgICAgICAgICAgIDxwYXRoIGQ9Ik01Mi45NzIxOTY4LDEwMy4xODY4NDQgTDQyLjgzODkwMTUsMTAzLjE4Njg0NCBMMzkuNDYwMzExOCwxMDMuMTg2ODQ0IEwzOS40NjAzMTE4LDEwMy4zMjY4ODkgQzM5LjQ2MDMxMTgsMTA3Ljk2MDUyNyA0My41NDE1MDMsMTExLjcxNDIyNyA0OC4zMjY5NDUxLDExMS43MTQyMjcgQzUzLjExNDg2MTIsMTExLjcxNDIyNyA1Ny4xOTYwNTI0LDEwNy45NTk3MTggNTcuMTk2MDUyNCwxMDMuMzI2ODg5IEw1Ny4xOTYwNTI0LDEwMy4xODY4NDQgTDUyLjk3MjE5NjgsMTAzLjE4Njg0NCBaIiBpZD0iZXllLXNoYWRvdy1sZWZ0IiBmaWxsPSIjMzMzMTUyIiBmaWxsLXJ1bGU9Im5vbnplcm8iPjwvcGF0aD4KICAgICAgICAgICAgICAgICAgICA8cGF0aCBkPSJNNDIuODM4OTAxNSwxMDMuMTg2ODQ0IEw0Mi44Mzg5MDE1LDEwMy4zMjY4ODkgQzQyLjgzODkwMTUsMTA2LjA4MzI3MiA0NS4xMDAwOTA5LDEwOC4zMTY3MTIgNDcuOTA0NzI0NSwxMDguMzE2NzEyIEM1MC43MTQzMDU5LDEwOC4zMTY3MTIgNTIuOTczMDIxNCwxMDYuMDgzMjcyIDUyLjk3MzAyMTQsMTAzLjMyNjg4OSBMNTIuOTczMDIxNCwxMDMuMTg2ODQ0IEw0Mi44Mzg5MDE1LDEwMy4xODY4NDQgWiIgaWQ9ImV5ZS1sZWZ0IiBmaWxsPSIjRkZGRkZGIiBmaWxsLXJ1bGU9Im5vbnplcm8iPjwvcGF0aD4KICAgICAgICAgICAgICAgICAgICA8cGF0aCBkPSJNNDkuNDcwNzM0MiwxMDMuMTg2ODQ0IEw0Ny4wOTMyNjkyLDEwMy4xODY4NDQgQzQ3LjA3MjY1MjksMTAzLjE4Njg0NCA0Ny4wNTAzODc0LDEwMy4xOTgxNzcgNDcuMDMxNDIwNSwxMDMuMjAyMjI1IEM0Ny4zMjQ5OTU3LDEwMy4yNjI5MzggNDcuNDg3NDUxOCwxMDMuOTE4NjQyIDQ3LjQyNTYwMywxMDQuMzU0OTY4IEM0Ny4zMjk5NDM3LDEwNS4wMjIwMDQgNDYuNzU0MzM4MiwxMDUuNDg1MDQ0IDQ2LjA4NzE5NjYsMTA1LjQ5NjM3NyBDNDYuMjgyNjM4NSwxMDYuMzY4MjIgNDcuMDA2NjgxLDEwNy4wNjkyNTYgNDcuOTY2NTczMiwxMDcuMjAyMDE2IEM0OS4xOTQ0NzY2LDEwNy4zNzI4MjMgNTAuMzMyNDkzMSwxMDYuNTQ1NTAzIDUwLjUwNDAyMDMsMTA1LjM0MDE0MiBDNTAuNjMxMDE2NCwxMDQuNDUyOTE4IDUwLjE5NzI1MDYsMTAzLjE4Njg0NCA0OS40NzA3MzQyLDEwMy4xODY4NDQgWiIgaWQ9ImV5ZS1wdXBpbC1sZWZ0IiBmaWxsPSIjMzMzMTUyIiBmaWxsLXJ1bGU9Im5vbnplcm8iPjwvcGF0aD4KICAgICAgICAgICAgICAgICAgICA8cGF0aCBkPSJNODQuNTcxOTQ4MSw5OS4yMzE1NzU4IEM4NS4xMzkzMDcsOTguNjIxMjA1MSA4OS45NTYwODU5LDkzLjI1NTc3MDIgODMuNTEzOTIyNSw5My4yNTU3NzAyIEM3Ny42OTI3MjA2LDkzLjI1NTc3MDIgNzMuNTA0MzI0Niw5Ny44NjY3NDE2IDcyLjM5NDM0NjQsOTkuMjMxNTc1OCBMODQuNTcxOTQ4MSw5OS4yMzE1NzU4IFoiIGlkPSJicm93LXJpZ2h0IiBmaWxsPSIjQzQ5QTdFIiBmaWxsLXJ1bGU9Im5vbnplcm8iPjwvcGF0aD4KICAgICAgICAgICAgICAgICAgICA8cGF0aCBkPSJNNTYuNzg0NTUyMiw5OS4yMzE1NzU4IEM1NS42NzUzOTg1LDk3Ljg2Njc0MTYgNTEuNDg3MDAyOCw5My4yNTU3NzAyIDQ1LjY2NDE1MTMsOTMuMjU1NzcwMiBDMzkuMjI1Mjg2OCw5My4yNTU3NzAyIDQ0LjA0MjA2NTYsOTguNjIxMjA1MSA0NC42MDYxMjYxLDk5LjIzMTU3NTggTDU2Ljc4NDU1MjIsOTkuMjMxNTc1OCBaIiBpZD0iYnJvdy1sZWZ0IiBmaWxsPSIjRDhCN0EwIiBmaWxsLXJ1bGU9Im5vbnplcm8iPjwvcGF0aD4KICAgICAgICAgICAgICAgICAgICA8cGF0aCBkPSJNMjUuODE0ODMzNiw2Mi45OTA2MDM2IEMyNi4xOTc0NzExLDU3LjcyNjM1NzQgMzEuNzc2MjI2Miw0NS4xMTMzNzUxIDM3LjA5NzY5MDYsMzQuNDgzNjkzOCBMMzguNTE2MDg4LDQ0LjIwMjY3NjIgQzM3Ljk3NTExNzgsNDcuODM2NTY4NSAzNS41MDI4MTgxLDYyLjA4Nzk5OTQgMjguODcwOTg1Myw3MS4wNzExMzY5IEwyNS44MTQ4MzM2LDYyLjk5MDYwMzYgWiIgaWQ9ImVhci1sZWZ0IiBmaWxsPSIjRDhCN0EwIiBmaWxsLXJ1bGU9Im5vbnplcm8iPjwvcGF0aD4KICAgICAgICAgICAgICAgICAgICA8cGF0aCBkPSJNOTAuODAzMDAxMiw0My40NDU3ODM5IEw5Mi4xMTAwNzA3LDM0LjQ4NDUwMzMgQzk3LjQzMDcxMDUsNDUuMTEzMzc1MSAxMDMuMDEyNzY0LDU3LjcyNzE2NjYgMTAzLjM5NTQwMiw2Mi45OTE0MTMyIEwxMDAuNDEwOTk1LDcwLjg4MDA5MjQgQzkzLjI0NTYxMzMsNjAuOTkxMTEyNyA5MC45OTc2MTg0LDQ0LjkxNTA0NTIgOTAuODAzMDAxMiw0My40NDU3ODM5IFoiIGlkPSJlYXItcmlnaHQiIGZpbGw9IiNDNDlBN0UiIGZpbGwtcnVsZT0ibm9uemVybyI+PC9wYXRoPgogICAgICAgICAgICAgICAgICAgIDxtYXNrIGlkPSJtYXNrLTIiIGZpbGw9IndoaXRlIj4KICAgICAgICAgICAgICAgICAgICAgICAgPHVzZSB4bGluazpocmVmPSIjcGF0aC0xIj48L3VzZT4KICAgICAgICAgICAgICAgICAgICA8L21hc2s+CiAgICAgICAgICAgICAgICAgICAgPHVzZSBpZD0ibm9zZSIgZmlsbD0iIzMzMzE1MiIgZmlsbC1ydWxlPSJub256ZXJvIiB4bGluazpocmVmPSIjcGF0aC0xIj48L3VzZT4KICAgICAgICAgICAgICAgIDwvZz4KICAgICAgICAgICAgPC9nPgogICAgICAgIDwvZz4KICAgIDwvZz4KPC9zdmc+
+
+source:
+  type: quickstart
+
+locale: "en"
+variableGroups:
+  - title: "Basic Hidden"
+    variables:
+    - compartment_ocid
+    - tenancy_ocid
+    - region
+    visible: false
+
+  - title: "Snyk Configuration"
+    variables:
+    - snyk_integration_id   
+    - snyk_deploy_goof_sample
+    - snyk_sysdig_integration
+    - sysdig_eve_secret_name
+    - sysdig_agent_namespace
+
+  - title: "OKE Cluster Configuration"
+    variables:
+    - create_new_oke_cluster
+    - existent_oke_cluster_compartment_ocid
+    - existent_oke_cluster_id
+    - show_advanced
+    - app_name
+    - k8s_version
+    - cluster_workers_visibility
+    - cluster_endpoint_visibility
+    - create_new_compartment_for_oke
+
+  - title: "OKE Worker Nodes"
+    variables:
+    - cluster_autoscaler_enabled
+    - num_pool_workers
+    - cluster_autoscaler_min_nodes
+    - cluster_autoscaler_max_nodes
+    - node_pool_shape
+    - node_pool_node_shape_config_ocpus
+    - node_pool_node_shape_config_memory_in_gbs
+    - generate_public_ssh_key
+    - public_ssh_key
+    - image_operating_system
+    - image_operating_system_version
+    - node_pool_name
+
+  - title: "Dynamic Group and Policies"
+    variables:
+    - create_dynamic_group_for_nodes_in_compartment
+    - existent_dynamic_group_for_nodes_in_compartment
+    - create_compartment_policies
+    - create_tenancy_policies
+
+  - title: "Encryption using OCI Vault (KMS)"
+    variables:
+    - use_encryption_from_oci_vault
+    - create_new_encryption_key
+    - existent_encryption_key_id
+    - create_vault_policies_for_group
+    - user_admin_group_for_vault_policy
+
+  - title: "Extras Hidden"
+    variables:
+      - user_ocid
+      - fingerprint
+      - private_key_path
+      - network_cidrs
+      - cluster_options_admission_controller_options_is_pod_security_policy_enabled
+      - cluster_options_add_ons_is_kubernetes_dashboard_enabled
+      - node_pool_boot_volume_size_in_gbs
+      - oke_compartment_description
+      - create_oci_service_user
+      - existent_oke_nodepool_id_for_autoscaler
+    visible: false
+
+variables:
+  compartment_ocid:
+    type: oci:identity:compartment:id
+    title: "Compartment"
+    description: "The compartment in which to create compute instance(s)"
+    required: true
+
+  snyk_integration_id:
+    type: string
+    title: "Snyk Integration id"
+    required: true
+
+  snyk_deploy_goof_sample:
+    type: boolean
+    title: "Deploy Snyk's Goof Sample"
+    required: true
+    visible: yes
+
+  snyk_sysdig_integration:
+    type: boolean
+    title: "Enable Sysdig integration to Snyk"
+    required: true
+    visible: yes
+
+  sysdig_eve_secret_name:
+    type: string
+    title: "Sysdig Eve Secret Name"
+    required: true
+    visible:
+      and:
+        - snyk_sysdig_integration
+
+  sysdig_agent_namespace:
+    type: string
+    title: "Sysdig Agent Namespace"
+    required: true
+    visible:
+      and:
+        - snyk_sysdig_integration
+
+  app_name:
+    type: string
+    title: "Cluster Name Prefix"
+    required: true
+    visible:
+      and:
+        - create_new_oke_cluster
+
+  show_advanced:
+    type: boolean
+    title: "Show advanced options?"
+    description: "Shows advanced options, allowing enable customer-managed encryption keys, select your ssh key, select/unselect cluster utilities, do not create policies, and other advanced options"
+    visible:
+      and:
+        - create_new_oke_cluster
+
+  create_oci_service_user:
+    type: boolean
+    title: "Creates OCI Service User"
+    required: true
+    visible:
+      and:
+        - create_new_oke_cluster
+        - show_advanced
+
+  # OKE Cluster
+  create_new_oke_cluster:
+    type: boolean
+    title: "Create new OKE Cluster"
+
+  existent_oke_cluster_compartment_ocid:
+    type: oci:identity:compartment:id
+    title: "Existent OKE Cluster Compartment"
+    description: "The compartment where you find the existent OKE Cluster"
+    default: compartment_ocid
+    required: true
+    visible:
+      not:
+        - create_new_oke_cluster
+
+  existent_oke_cluster_id:
+    type: oci:container:cluster:id
+    title: "Existent OKE Cluster"
+    required: true
+    dependsOn:
+      compartmentId: existent_oke_cluster_compartment_ocid
+    visible:
+      not:
+        - create_new_oke_cluster
+
+  k8s_version:
+    type: enum
+    enum: # Necessary hardcoded supported versions, as ORM does not retrieve the versions from OKE.
+    - "Latest"
+    - "v1.21.5"
+    - "v1.20.11"
+    - "v1.19.15"
+    title: "Kubernetes Version"
+    required: true
+    visible:
+      and:
+        - create_new_oke_cluster
+        - show_advanced
+
+  cluster_workers_visibility:
+    type: enum
+    enum:
+    - "Private"
+    - "Public"
+    title: "Choose Worker Nodes visibility type"
+    required: true
+    visible:
+      and:
+        - create_new_oke_cluster
+
+  cluster_endpoint_visibility:
+    type: enum
+    enum:
+    # - "Private"
+    - "Public"
+    title: "Choose Kubernetes API Endpoint visibility type"
+    required: true
+    visible:
+      and:
+        - create_new_oke_cluster
+
+  create_new_compartment_for_oke:
+    type: boolean
+    title: "Create new Compartment"
+    visible:
+      and:
+        - create_new_oke_cluster
+        - show_advanced
+
+  cluster_autoscaler_enabled:
+    type: boolean
+    title: "Enable Cluster Autoscaler" 
+    visible:
+      and:
+        - create_new_oke_cluster 
+
+  num_pool_workers:
+    type: integer
+    title: "Number of Worker Nodes"
+    minimum: 1
+    maximum: 1000
+    required: true
+    visible:
+      and:
+        - and:
+          - create_new_oke_cluster
+        - not:
+          - cluster_autoscaler_enabled
+
+  cluster_autoscaler_min_nodes:
+    type: integer
+    title: "Autoscaler: Minimum number of nodes"
+    minimum: 1
+    maximum: 1000
+    required: true
+    visible:
+      and:
+        - create_new_oke_cluster
+        - cluster_autoscaler_enabled
+
+  cluster_autoscaler_max_nodes:
+    type: integer
+    title: "Autoscaler: Maximum number of nodes"
+    minimum: 1
+    maximum: 1000
+    required: true
+    visible:
+      and:
+        - create_new_oke_cluster
+        - cluster_autoscaler_enabled
+
+  existent_oke_nodepool_id_for_autoscaler:
+    type: string
+    title: "OKE Nodepool id"
+    required: true
+    visible:
+      and:
+        - and:
+          - cluster_autoscaler_enabled
+        - not:
+          - create_new_oke_cluster
+
+  node_pool_shape:
+    type: oci:core:instanceshape:name
+    title: "Select a shape for the Worker Nodes instances"
+    required: true
+    dependsOn:
+      compartmentId: compartment_ocid
+    visible:
+      and:
+        - create_new_oke_cluster
+
+  node_pool_node_shape_config_ocpus:
+    type: integer
+    minimum: 1
+    maximum: 64
+    title: "Number of OCPUs"
+    visible:
+      and:
+        - and:
+          - create_new_oke_cluster
+        - or:
+          - eq:
+            - node_pool_shape 
+            - "VM.Standard.E3.Flex"
+          - eq:
+            - node_pool_shape 
+            - "VM.Standard.E4.Flex"
+          - eq:
+            - node_pool_shape 
+            - "VM.Standard.A1.Flex"
+
+  node_pool_node_shape_config_memory_in_gbs:
+    type: integer
+    minimum: 1
+    maximum: 1024
+    title: "Amount of memory (GB)"
+    visible:
+      and:
+        - and:
+          - create_new_oke_cluster
+        - or:
+          - eq:
+            - node_pool_shape 
+            - "VM.Standard.E3.Flex"
+          - eq:
+            - node_pool_shape 
+            - "VM.Standard.E4.Flex"
+          - eq:
+            - node_pool_shape 
+            - "VM.Standard.A1.Flex"
+
+  node_pool_name:
+    type: string
+    title: "Node Pool Name"
+    required: true
+    visible:
+      and:
+        - create_new_oke_cluster
+        - show_advanced
+
+  cluster_options_add_ons_is_kubernetes_dashboard_enabled:
+    type: boolean
+    title: "Kubernetes Dashboard Enabled"
+    visible: false
+
+  generate_public_ssh_key:
+    type: boolean
+    title: "Auto generate public ssh key?"
+    required: true
+    visible:
+      and:
+        - create_new_oke_cluster
+        - show_advanced
+
+  public_ssh_key:
+    type: oci:core:ssh:publickey
+    title: "Import your own SSH public key"
+    additionalProps:
+      allowMultiple: true
+    required: false
+    pattern: "((^(ssh-rsa AAAAB3NzaC1yc2|ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNT|ecdsa-sha2-nistp384 AAAAE2VjZHNhLXNoYTItbmlzdHAzODQAAAAIbmlzdHAzOD|ecdsa-sha2-nistp521 AAAAE2VjZHNhLXNoYTItbmlzdHA1MjEAAAAIbmlzdHA1Mj|ssh-ed25519 AAAAC3NzaC1lZDI1NTE5|ssh-dss AAAAB3NzaC1kc3)[0-9A-Za-z+\/]+[=]{0,3})( [^,]*)?)(,((ssh-rsa AAAAB3NzaC1yc2|ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNT|ecdsa-sha2-nistp384 AAAAE2VjZHNhLXNoYTItbmlzdHAzODQAAAAIbmlzdHAzOD|ecdsa-sha2-nistp521 AAAAE2VjZHNhLXNoYTItbmlzdHA1MjEAAAAIbmlzdHA1Mj|ssh-ed25519 AAAAC3NzaC1lZDI1NTE5|ssh-dss AAAAB3NzaC1kc3)[0-9A-Za-z+\/]+[=]{0,3})( [^,]*)?)*$"
+    visible:
+      and:
+        - and:
+          - create_new_oke_cluster
+          - show_advanced
+        - not:
+          - generate_public_ssh_key
+
+  image_operating_system:
+    type: enum
+    title: "Image OS"
+    enum:
+      - "Oracle Linux"
+    required: true
+    visible:
+      and:
+        - create_new_oke_cluster
+        - show_advanced
+
+  image_operating_system_version:
+    type: string
+    title: "Image OS Version"
+    required: true
+    visible:
+      and:
+        - create_new_oke_cluster
+        - show_advanced
+
+  # Dynamic Groups and Policies for Instance Principals and Autoscaler
+  create_dynamic_group_for_nodes_in_compartment:
+    type: boolean
+    title: "Create Dynamic Group for Worker Nodes in the Compartment"
+    required: true
+    visible:
+      and:
+        - show_advanced
+
+  existent_dynamic_group_for_nodes_in_compartment:
+    type: string
+    title: "Existent Dynamic Group"
+    required: true
+    visible:
+      and:
+        - and:
+          - show_advanced
+        - or:
+          - create_compartment_policies
+          - create_tenancy_policies
+        - not:
+          - create_dynamic_group_for_nodes_in_compartment
+        
+  create_compartment_policies:
+    type: boolean
+    title: "Create Compartment Policies"
+    required: true
+    visible:
+      and:
+        - show_advanced
+
+  create_tenancy_policies:
+    type: boolean
+    title: "Create Tenancy Policies"
+    required: true
+    visible:
+      and:
+        - show_advanced
+
+  # Encryption options
+  use_encryption_from_oci_vault:
+    type: boolean
+    title: "Encrypt using Customer-Managed Keys instead of Oracle Managed Encryption"
+    visible:
+      and:
+        - create_new_oke_cluster
+        - show_advanced
+
+  create_new_encryption_key:
+    type: boolean
+    title: "Create new Vault and Key"
+    visible:
+      and:
+        - create_new_oke_cluster
+        - show_advanced
+        - use_encryption_from_oci_vault
+
+  existent_encryption_key_id:
+    type: string
+    title: "Existent Encryption Key OCID"
+    required: true
+    visible:
+      and:
+        - and:
+          - create_new_oke_cluster
+          - show_advanced
+          - use_encryption_from_oci_vault
+        - not:
+          - create_new_encryption_key
+
+  create_vault_policies_for_group:
+    type: boolean
+    title: "Create policies for the user group to manage vault and keys"
+    visible:
+      and:
+        - create_new_oke_cluster
+        - show_advanced
+        - use_encryption_from_oci_vault
+        - create_new_encryption_key
+
+  user_admin_group_for_vault_policy:
+    type: string
+    title: "Specify your group to include the policy"
+    visible:
+      and:
+        - create_new_oke_cluster
+        - show_advanced
+        - use_encryption_from_oci_vault
+        - create_new_encryption_key
+        - create_vault_policies_for_group
+
+outputGroups:
+  - title: Deployment Info
+    outputs:
+      - deploy_id
+      - deployed_to_region
+      - deployed_oke_kubernetes_version
+      - stack_version
+
+  - title: Dev Notes
+    outputs:
+      - dev
+      - comments
+      - snyk_goof_sample_access
+      - snyk_goof_sample_mongodb_access
+
+outputs:
+
+  deploy_id:
+    type: string
+    title: "Deployment Id"
+    visible: true
+
+  deployed_to_region:
+    type: string
+    title: "Deployed using Region"
+    visible: true
+
+  deployed_oke_kubernetes_version:
+    type: string
+    title: "OKE Kubernetes version deployed"
+    visible: true
+
+  stack_version:
+    type: string
+    title: Stack Version
+    displayText: Stack Version deployed
+    visible: true
+
+  comments:
+    type: string
+    title: Comments
+    displayText: Comments
+    visible: true
+
+  dev:
+    type: string
+    title: dev
+    displayText: dev note from Oracle Developers
+    visible: true
+
+  snyk_goof_sample_access:
+    type: string
+    title: Kubectl command to check goof sample
+    displayText: Kubectl command to check goof sample (http://localhost:8088)
+    visible: true
+
+  snyk_goof_sample_mongodb_access:
+    type: string
+    title: Kubectl command to check goof mongoDb
+    displayText: Kubectl command to check goof mongoDb
+    visible: true
+
+  kubeconfig_for_kubectl:
+    type: string
+    title: kubeconfig
+    displayText: kubeconfig for local kubectl run. Not used by ORM
+    visible: false

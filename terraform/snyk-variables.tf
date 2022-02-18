@@ -9,7 +9,7 @@ variable "snyk_integration_id" {
 
 variable "snyk_deploy_goof_sample" {
   default     = false
-  description = "Deploy Snyk's Goof Sample"
+  description = "NOTE: DO NOT deploy the sample application in a production environment. This application is used for demo purposes and contains a number of vulnerabilities. It is highly recommended that you promptly uninstall the application after you've completed the tutorial."
 }
 
 variable "snyk_sysdig_integration" {

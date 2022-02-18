@@ -14,8 +14,44 @@ compartment_ocid = "ocid1.compartment...."
 # region
 region = "us-ashburn-1"
 
-# Ingress Loadbalancer
-# ingress_nginx_enabled                = true
-# ingress_load_balancer_shape          = "flexible" # Flexible, 10Mbps, 100Mbps, 400Mbps or 8000Mps
-# ingress_load_balancer_shape_flex_min = "10"
-# ingress_load_balancer_shape_flex_max = "100"
+# Snyk
+snyk_integration_id     = "" # Copy from https://app.snyk.io/org/YOUR-ORGANIZATION-NAME/manage/integrations/kubernetes
+snyk_deploy_goof_sample = false
+
+# OKE Cluster
+
+## Cluster Workers visibility
+cluster_workers_visibility = "Private"
+
+## Cluster API Endpoint visibility
+cluster_endpoint_visibility = "Public"
+
+## create_new_oke_cluster
+create_new_oke_cluster         = false
+existent_oke_cluster_id        = "" # e.g.: ocid1.cluster.oc1...
+create_new_compartment_for_oke = false
+
+## Create Dynamic group and Policies for Autoscaler and OCI Metrics and Logging
+create_dynamic_group_for_nodes_in_compartment = false
+create_compartment_policies                   = false
+create_tenancy_policies                       = false
+
+## Encryption (OCI Vault/Key Management/KMS)
+use_encryption_from_oci_vault = false
+create_new_encryption_key     = false
+existent_encryption_key_id    = "" # e.g.: "ocid1.key.oc1..."
+
+# Enable Cluster Autoscaler
+cluster_autoscaler_enabled              = true
+cluster_autoscaler_min_nodes            = 1
+cluster_autoscaler_max_nodes            = 8
+existent_oke_nodepool_id_for_autoscaler = "" # e.g.: ocid1.nodepool.oc1....
+
+# OKE Worker Nodes (Compute)
+num_pool_workers                          = 2 # If autoscaler is enabled, uses the value from cluster_autoscaler_min_nodes for the initial node pool number of nodes
+node_pool_shape                           = "VM.Standard.E3.Flex"
+node_pool_node_shape_config_ocpus         = 1
+node_pool_node_shape_config_memory_in_gbs = 8
+generate_public_ssh_key                   = true # if true, auto generate public and private keys and assign to the node pool.
+public_ssh_key                            = ""   # if generate_public_ssh_key=true, public_ssh_key is ignored. if generate_public_ssh_key=false, assign public_ssh_key, that can be nothing if ""
+
