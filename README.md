@@ -4,29 +4,29 @@ Snyk: the platform developers choose to build cloud native applications securely
 
 ## Summary
 
-This quickstart allows you deploy Snyk Monitor on an existent OKE Cluster. Optionally allow you create a new OKE Kubernetes Cluster.
+This quickstart allows you deploy Snyk Monitor on an existent OKE Cluster. It optionally allows you to create a new OKE Kubernetes Cluster.
 
-If you do not have any app to monitor and want to test, you can also deploy snyk's goof test app.
+If you do not have any app to monitor and want to test, you can also deploy Snyk's goof test app.
 
 ## Prerequisites
 
 - An [Oracle Cloud](https://cloud.oracle.com/) Account.
-- A [Snyk](https://snyk.co/udrgA) Business or Enterprise plan.
-- If enable the Sysdig integration, you need the sysdig agent configured and running on the same cluster
+- A [Snyk](https://snyk.io) Business or Enterprise plan.
+- If the Sysdig integration is enabled, you need the Sysdig agent configured and running on the same cluster.
 
 ## Deploying
 
 ### Using the magic button
 
-You can deploy directly to you Oracle Cloud tenancy using this button: [![Deploy to Oracle Cloud][magic_button]][magic_snyk_stack] follow the wizard, include your Snyk integration Id and apply.
+You can deploy directly to your Oracle Cloud tenancy using this button: [![Deploy to Oracle Cloud][magic_button]][magic_snyk_stack] follow the wizard, include your Snyk integration ID and apply.
 
-You can also enable the Sysdig Integration. The Sysdig agent must be installed and running on the same cluster. The scripts will clone the sysdig secret to the snyk namespace. If the secret has a different name from default or the sysdig is in a different namespace, enter the new name.
+You can also enable the Sysdig Integration. The Sysdig agent must be installed and running on the same cluster. The scripts will clone the Sysdig secret to the Snyk namespace. If the secret has a different name from default or the Sysdig is in a different namespace, enter the new name.
 
-Remember to select "Run Apply" when creating the stack. You can also do later by clicking the button "apply" on the stack details.
+Remember to select "Run Apply" when creating the stack. You can also do this later by clicking the button "apply" on the stack details.
 
 ### Using Terraform Scripts
 
-You can use Terraform scripts to apply. If you are using the Terraform (locally or via CloudShell), you need to copy the file `terraform.tfvars.example` to `terraform.tfvars` and populate the necessary variables.
+You can use Terraform scripts to apply. If you are using Terraform (locally or via CloudShell), you need to copy the file `terraform.tfvars.example` to `terraform.tfvars` and populate the necessary variables.
 
 ## Using Snyk
 
@@ -68,7 +68,7 @@ Finally, let's examine our open source dependencies and found vulnerabilities.
 
 ![open source dependencies and found vulnerabilities](https://3099555661-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2F-MdwVZ6HOZriajCf5nXH%2Fuploads%2Fgit-blob-c2ec952ea219cac6c299d14f9f47e76b18da9fda%2Fsnyk-k8s-integration-05.png?alt=media)
 
-In this view, we get detailed contextual data on found vulnerabilities along with [Snyk's Priority Score](https://snyk.io/blog/snyk-priority-score/) which helps to drastically simplify one of the biggest challenges in using open source securely—working out which vulnerabilities to tackle first.
+In this view, we get detailed contextual data on found vulnerabilities along with [Snyk's Priority Score](https://snyk.io/blog/snyk-priority-score/) which helps to drastically simplify one of the biggest challenges in using open source securely: working out which vulnerabilities to tackle first.
 
 ## Questions
 
