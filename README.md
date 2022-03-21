@@ -20,6 +20,9 @@ If you do not have any app to monitor and want to test, you can also deploy Snyk
 
 You can deploy directly to your Oracle Cloud tenancy using this button: [![Deploy to Oracle Cloud][magic_button]][magic_snyk_stack] follow the wizard, include your Snyk integration ID and apply.
 
+- Locate your Snyk Integration ID from the Snyk Integrations page (navigate to <https://app.snyk.io/org/YOUR-ORGANIZATION-NAME/manage/integrations/kubernetes>) and copy it. The Snyk Integration ID is a UUID and looks similar to the following: `abcd1234-abcd-1234-abcd-1234abcd1234`
+- Optionally enter the Container Private Registry credentials if you plan to use it and scan the container images
+
 You can also enable the Sysdig Integration. The Sysdig agent must be installed and running on the same cluster. The scripts will clone the Sysdig secret to the Snyk namespace. If the secret has a different name from default or the Sysdig is in a different namespace, enter the new name.
 
 Remember to select "Run Apply" when creating the stack. You can also do this later by clicking the button "apply" on the stack details.
