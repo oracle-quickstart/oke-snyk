@@ -30,3 +30,6 @@ override.tf.json
 
 ## tf crash log
 crash.log
+
+## Snyk Cache
+.dccache
