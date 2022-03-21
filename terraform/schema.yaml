@@ -121,16 +121,25 @@ variables:
     type: string
     title: "Container Private Registry URL"
     required: true
+    visible:
+      and:
+        - snyk_private_registry
 
   snyk_private_registry_username:
     type: string
     title: "Container Private Registry Username"
     required: true
+    visible:
+      and:
+        - snyk_private_registry
 
   snyk_private_registry_password:
     type: string
     title: "Container Private Registry Password or Auth Token"
     required: true
+    visible:
+      and:
+        - snyk_private_registry
 
   snyk_sysdig_integration:
     type: boolean
