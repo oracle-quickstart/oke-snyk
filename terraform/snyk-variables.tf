@@ -11,6 +11,22 @@ variable "snyk_deploy_goof_sample" {
   default     = false
   description = "NOTE: DO NOT deploy the sample application in a production environment. This application is used for demo purposes and contains a number of vulnerabilities. It is highly recommended that you promptly uninstall the application after you've completed the tutorial."
 }
+variable "snyk_private_registry" {
+  default     = false
+  description = "Enter credentials to scan private registry. If need more than one, update the created secret with the new credentials."
+}
+variable "snyk_private_registry_url" {
+  default     = ""
+  description = "Enter private registry url. i.e. iad.ocir.io"
+}
+variable "snyk_private_registry_username" {
+  default     = ""
+  description = "Enter private registry username. i.e. <tenancy-namespace>/oracleidentitycloudservice/<username>"
+}
+variable "snyk_private_registry_password" {
+  default     = ""
+  description = "Enter private registry password or auth token. Note: For ocir.io, the password is the auth token generated for the user."
+}
 
 variable "snyk_sysdig_integration" {
   default     = false
