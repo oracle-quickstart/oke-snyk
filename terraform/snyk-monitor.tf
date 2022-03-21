@@ -45,9 +45,19 @@ resource "kubernetes_secret" "snyk_monitor" {
   }
   data = {
     integrationId    = var.snyk_integration_id
-    "dockercfg.json" = jsonencode({})
+    "dockercfg.json" = jsonencode(local.snyk_dockercfg)
   }
   type = "Opaque"
+}
+
+locals {
+  snyk_dockercfg = var.snyk_private_registry ? {
+      auths = {
+        "${var.snyk_private_registry_url}" = {
+          auth = "${base64encode("${var.snyk_private_registry_username}:${var.snyk_private_registry_password}")}"
+        }
+      }
+    } : {}
 }
 
 # resource "kubernetes_secret" "snyk_docker_cfg" {
@@ -56,7 +66,13 @@ resource "kubernetes_secret" "snyk_monitor" {
 #   }
 
 #   data = {
-#     ".dockerconfigjson" = jsonencode({})
+#     ".dockerconfigjson" = jsonencode({
+    #   auths = {
+    #     "${var.registry_server}" = {
+    #       auth = "${base64encode("${var.registry_username}:${var.registry_password}")}"
+    #     }
+    #   }
+    # })
 #   }
 
 #   type = "kubernetes.io/dockerconfigjson"

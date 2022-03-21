@@ -26,6 +26,13 @@ variableGroups:
     variables:
     - snyk_integration_id   
     - snyk_deploy_goof_sample
+    - snyk_private_registry
+    - snyk_private_registry_url
+    - snyk_private_registry_username
+    - snyk_private_registry_password
+
+  - title: "Snyk <> Sysdig Integration"
+    variables:
     - snyk_sysdig_integration
     - sysdig_eve_secret_name
     - sysdig_agent_namespace
@@ -103,6 +110,36 @@ variables:
     title: "Deploy Snyk's Goof Sample"
     required: true
     visible: yes
+
+  snyk_private_registry:
+    type: boolean
+    title: "Configure Private Container Registry to be scanned by Snyk"
+    required: true
+    visible: yes
+
+  snyk_private_registry_url:
+    type: string
+    title: "Container Private Registry URL"
+    required: true
+    visible:
+      and:
+        - snyk_private_registry
+
+  snyk_private_registry_username:
+    type: string
+    title: "Container Private Registry Username"
+    required: true
+    visible:
+      and:
+        - snyk_private_registry
+
+  snyk_private_registry_password:
+    type: string
+    title: "Container Private Registry Password or Auth Token"
+    required: true
+    visible:
+      and:
+        - snyk_private_registry
 
   snyk_sysdig_integration:
     type: boolean
