@@ -217,6 +217,7 @@ variables:
     type: enum
     enum: # Necessary hardcoded supported versions, as ORM does not retrieve the versions from OKE.
     - "Latest"
+    - "v1.22.5"
     - "v1.21.5"
     - "v1.20.11"
     - "v1.19.15"
@@ -514,15 +515,22 @@ outputGroups:
     outputs:
       - deploy_id
       - deployed_to_region
-      - deployed_oke_kubernetes_version
       - stack_version
+
+  - title: Kubernetes Cluster Info
+    outputs:
+      - deployed_oke_kubernetes_version
+      - generated_private_key_pem
+
+  - title: Snyk Goof App Notes
+    outputs:
+      - snyk_goof_sample_access
+      - snyk_goof_sample_mongodb_access
 
   - title: Dev Notes
     outputs:
       - dev
       - comments
-      - snyk_goof_sample_access
-      - snyk_goof_sample_mongodb_access
 
 outputs:
 
@@ -547,6 +555,11 @@ outputs:
     displayText: Stack Version deployed
     visible: true
 
+  generated_private_key_pem:
+    type: string
+    title: Generated Private Key
+    displayText: Generated Private Key
+
   comments:
     type: string
     title: Comments
@@ -563,13 +576,11 @@ outputs:
     type: string
     title: Kubectl command to check goof sample
     displayText: Kubectl command to check goof sample (http://localhost:8088)
-    visible: true
 
   snyk_goof_sample_mongodb_access:
     type: string
     title: Kubectl command to check goof mongoDb
     displayText: Kubectl command to check goof mongoDb
-    visible: true
 
   kubeconfig_for_kubectl:
     type: string
