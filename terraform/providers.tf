@@ -3,12 +3,12 @@
 # 
 
 terraform {
-  required_version = ">= 1.0"
+  required_version = ">= 1.1"
   required_providers {
     oci = {
-      source  = "hashicorp/oci"
-      version = ">= 4.68.0"
-      # https://registry.terraform.io/providers/hashicorp/oci/4.68.0
+      source  = "oracle/oci"
+      version = ">= 4.77.0"
+      # https://registry.terraform.io/providers/oracle/oci/4.77.0
     }
     kubernetes = {
       source  = "hashicorp/kubernetes"
