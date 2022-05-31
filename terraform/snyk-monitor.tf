@@ -17,7 +17,7 @@ resource "helm_release" "snyk_monitor" {
   name       = "snyk-monitor"
   repository = local.snyk_helm_repository.snyk_charts
   chart      = "snyk-monitor"
-  namespace  = kubernetes_namespace.snyk_monitor_namespace.0.id
+  namespace  = kubernetes_namespace.snyk_monitor_namespace.id
   wait       = true
 
   set {
@@ -41,7 +41,7 @@ locals {
 resource "kubernetes_secret" "snyk_monitor" {
   metadata {
     name      = "snyk-monitor"
-    namespace = kubernetes_namespace.snyk_monitor_namespace.0.id
+    namespace = kubernetes_namespace.snyk_monitor_namespace.id
   }
   data = {
     integrationId    = var.snyk_integration_id
@@ -90,7 +90,7 @@ data "kubernetes_secret" "sysdig_eve" {
 resource "kubernetes_secret" "sysdig_eve_for_snyk" {
   metadata {
     name      = var.sysdig_eve_secret_name
-    namespace = kubernetes_namespace.snyk_monitor_namespace.0.id
+    namespace = kubernetes_namespace.snyk_monitor_namespace.id
   }
   data = data.kubernetes_secret.sysdig_eve.0.data
   type = data.kubernetes_secret.sysdig_eve.0.type
