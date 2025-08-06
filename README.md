@@ -77,5 +77,20 @@ In this view, we get detailed contextual data on found vulnerabilities along wit
 
 If you have an issue or a question, please [open an issue](https://github.com/oracle-quickstart/oke-snyk/issues/new).
 
+## Contributing
+
+This project welcomes contributions from the community. Before submitting a pull request, please [review our contribution guide](./CONTRIBUTING.md)
+
+## Security
+
+Please consult the [security guide](./SECURITY.md) for our responsible security vulnerability disclosure process
+
+## License
+
+Copyright (c) 2022 Oracle and/or its affiliates.
+
+Released under the Universal Permissive License v1.0 as shown at
+<https://oss.oracle.com/licenses/upl/>.
+
 [magic_button]: https://oci-resourcemanager-plugin.plugins.oci.oraclecloud.com/latest/deploy-to-oracle-cloud.svg
 [magic_snyk_stack]: https://cloud.oracle.com/resourcemanager/stacks/create?zipUrl=https://github.com/oracle-quickstart/oke-snyk/releases/latest/download/oke-snyk-stack.zip
